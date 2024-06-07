@@ -12,7 +12,13 @@ public class SampleGame : Game
     private Camera _camera;
     private Vector2 _playerPosition;
     private float _moveSpeed = 2.5f;
+    private GraphicsDeviceManager graphics;
 
+    public SampleGame()
+    {
+        graphics = new GraphicsDeviceManager(this);
+
+    }
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
