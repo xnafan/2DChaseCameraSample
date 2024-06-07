@@ -1,6 +1,6 @@
 # 2D ChaseCamera Code Sample
-This project shows how to make a very simple camera which follows the player around.
-
+This project shows how to make a very simple camera class in Monogame which follows the player around.
+![Sample of chase camera](https://github.com/xnafan/2DChaseCameraSample/blob/master/SampleChaseCamera.gif)
 
 The magic happens in the Game.Draw method where the camera's offset is used to create a translation matrix to use in the SpriteBatch object:  
 ```C#
