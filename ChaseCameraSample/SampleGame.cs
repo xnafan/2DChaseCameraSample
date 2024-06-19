@@ -22,17 +22,17 @@ public class SampleGame : Game
     }
     protected override void LoadContent()
     {
+        int windowWidth = 1024, windowHeight = 768;
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         
         //create two white textures so we don't need an image in the Content file
         _texture = CreateTexture(GraphicsDevice, 16, 16, Color.White);
         _smallTexture = CreateTexture(GraphicsDevice, 8, 8, Color.White);
-        Window.Title = "Sample Chase Camera - arrow keys to move..";
         _font = Content.Load<SpriteFont>("Content/Default");
         
         //set the desired window size
-        graphics.PreferredBackBufferWidth = 1024;
-        graphics.PreferredBackBufferHeight = 768;
+        graphics.PreferredBackBufferWidth = windowWidth;
+        graphics.PreferredBackBufferHeight = windowHeight;
         
         //apply the size changes
         graphics.ApplyChanges();
@@ -40,6 +40,7 @@ public class SampleGame : Game
         //instantiates the camera with the graphics device manager,
         //so the camera can get the screen size
         _camera = new Camera(graphics);
+        Window.Title = $"Sample MonoGame chase camera. Window width:{windowWidth}, window height: {windowHeight}";
     }
 
     protected override void Update(GameTime gameTime)
@@ -99,7 +100,7 @@ public class SampleGame : Game
     private void DrawWorldAndCameraCoordinates()
     {
         _spriteBatch.Draw(_smallTexture, Vector2.Zero - Vector2.One * 4, Color.White);
-        _spriteBatch.DrawString(_font, "World: (0,0)", new Vector2(15, -12), Color.White);
+        _spriteBatch.DrawString(_font, "World center: (0,0)", new Vector2(15, -12), Color.White);
         _spriteBatch.Draw(_smallTexture, _camera.Center - Vector2.One * 4, Color.Red);
         _spriteBatch.DrawString(_font, $"Camera center: ({_camera.Center.X:0.},{_camera.Center.Y:0.})", _camera.Center + Vector2.One * 20, Color.Red);
 
