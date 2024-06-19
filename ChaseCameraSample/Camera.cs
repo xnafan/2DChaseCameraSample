@@ -18,9 +18,9 @@ internal class Camera
     private Vector2 _quarterScreen;
     public Vector2 GetTopLeft() => Center - _quarterScreen;
 
-    public Camera(GraphicsDevice graphicsDevice)
+    public Camera(GraphicsDeviceManager graphicsDeviceManager)
     {
-        _quarterScreen =  new Vector2 (graphicsDevice.Viewport.Width/2, graphicsDevice.Viewport.Height/2);
+        _quarterScreen =  new Vector2 (graphicsDeviceManager.PreferredBackBufferWidth/2, graphicsDeviceManager.PreferredBackBufferHeight/2);
     }
     public void MoveToward (Vector2 target, float movePercentage= .02f)
     {
