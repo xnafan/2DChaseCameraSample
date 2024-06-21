@@ -58,7 +58,7 @@ public class SampleGame : Game
 
     private void MoveCameraTowardsPlayer(GameTime gameTime)
     {
-        _camera.MoveToward(gameTime, _playerPosition);
+        _camera.MoveToward(_playerPosition, (float) gameTime.ElapsedGameTime.TotalMilliseconds);
     }
 
     private void MovePlayerBasedOnKeyboardInput()

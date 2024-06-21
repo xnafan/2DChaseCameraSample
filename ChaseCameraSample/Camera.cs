@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Timers;
 
 namespace ChaseCameraSample;
 
@@ -22,7 +23,7 @@ internal class Camera
     {
         _quarterScreen =  new Vector2 (graphicsDeviceManager.PreferredBackBufferWidth/2, graphicsDeviceManager.PreferredBackBufferHeight/2);
     }
-    public void MoveToward(GameTime gameTime, Vector2 target, float movePercentage= .02f)
+    public void MoveToward(Vector2 target, float deltaTimeInMs, float movePercentage= .02f)
     {
         //figure out which direction to move the camera,
         //by subtracting the current location from the target's
@@ -34,7 +35,10 @@ internal class Camera
 
         //get a fraction how much time has passed since last update
         //so the camera moves at a constant speed
-        var fractionOfPassedTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds / 10;
+        var fractionOfPassedTime = deltaTimeInMs/ 10;
+        //note: dividing by 10 is an arbitrary constant,
+        //which works well in this case
+        //to make the camera slower than the player
 
         //move the camera towards the target based on
         //both the desired percentage of distance and the time passed
