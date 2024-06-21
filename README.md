@@ -100,10 +100,10 @@ internal class Camera
 ```
 # Smoother motion
 [u/Apostolique](https://www.reddit.com/user/Apostolique/) suggested using Lerping to smooth the motion of the camera even more - thanks! 😊👍  
-I have chosen to keep the camera as is above, to show you what is going on in the math, step by step.
-You can make the following changes to the camera class to get linear interpolation:
+I have chosen to keep the camera as is above, to show you what is going on in the math, step by step.  
+To get linear interpolation with his one-liner, you can make the following changes to the camera class:  
 
-//change the Camera.MoveToward method to
+Change the Camera.MoveToward method to
 ```C#
 public void MoveToward(Vector2 target, float deltaTimeInMs, float movePercentage= .02f)
 {
