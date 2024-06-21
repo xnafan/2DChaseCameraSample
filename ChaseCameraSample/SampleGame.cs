@@ -46,7 +46,7 @@ public class SampleGame : Game
     protected override void Update(GameTime gameTime)
     {
         GetKeyboardStateAndExitIfEscapePressed();
-        MoveCameraTowardsPlayer();
+        MoveCameraTowardsPlayer(gameTime);
         MovePlayerBasedOnKeyboardInput();
     }
 
@@ -56,9 +56,9 @@ public class SampleGame : Game
         if (_currentKeyboardState.IsKeyDown(Keys.Escape)) { Exit(); }
     }
 
-    private void MoveCameraTowardsPlayer()
+    private void MoveCameraTowardsPlayer(GameTime gameTime)
     {
-        _camera.MoveToward(_playerPosition);
+        _camera.MoveToward(gameTime, _playerPosition);
     }
 
     private void MovePlayerBasedOnKeyboardInput()
@@ -69,33 +69,33 @@ public class SampleGame : Game
         if (_currentKeyboardState.IsKeyDown(Keys.Right)) { _playerPosition += Vector2.UnitX * 1 * _moveSpeed; }
     }
 
-    protected override void Draw(GameTime gameTime)
-    {
-        //clear the screen with a dark blue color
-        GraphicsDevice.Clear(Color.Navy);
+protected override void Draw(GameTime gameTime)
+{
+    //clear the screen with a dark blue color
+    GraphicsDevice.Clear(Color.Navy);
 
-        //Use the offset of the camera's top left corner
-        //relative to the center of the camera (where it is pointing)
-        //to create a transformation matrix in 2D
-        Matrix transform = Matrix.CreateTranslation(-_camera.GetTopLeft().X, -_camera.GetTopLeft().Y, 0);
-        //send the transformation matrix to the spritebatch, so everything is drawn relative to the camera
-        _spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, transform);
+    //Use the offset of the camera's top left corner
+    //relative to the center of the camera (where it is pointing)
+    //to create a transformation matrix in 2D
+    Matrix transform = Matrix.CreateTranslation(-_camera.GetTopLeft().X, -_camera.GetTopLeft().Y, 0);
+    //send the transformation matrix to the spritebatch, so everything is drawn relative to the camera
+    _spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, transform);
 
-        //call the super class draw method
-        base.Draw(gameTime);
+    //call the super class draw method
+    base.Draw(gameTime);
 
-        //draw the grid and the player, world and camera coordinates
-        DrawGridForReference();
-        DrawPlayerWithPosition();
-        DrawWorldAndCameraCoordinates();
-        _spriteBatch.End();
+    //draw the grid and the player, world and camera coordinates
+    DrawGridForReference();
+    DrawPlayerWithPosition();
+    DrawWorldAndCameraCoordinates();
+    _spriteBatch.End();
 
-        //using a new spritebatch without the transformation matrix
-        //draw the UI on top of everything else, with absolute coordinates
-        _spriteBatch.Begin();
-        _spriteBatch.DrawString(_font, " Arrows to move, ESC to exit", Vector2.One * 10, Color.Cyan);
-        _spriteBatch.End();
-    }
+    //using a new spritebatch without the transformation matrix
+    //draw the UI on top of everything else, with absolute coordinates
+    _spriteBatch.Begin();
+    _spriteBatch.DrawString(_font, " Arrows to move, ESC to exit", Vector2.One * 10, Color.Cyan);
+    _spriteBatch.End();
+}
 
     private void DrawWorldAndCameraCoordinates()
     {

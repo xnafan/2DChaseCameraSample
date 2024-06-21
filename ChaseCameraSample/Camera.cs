@@ -22,20 +22,25 @@ internal class Camera
     {
         _quarterScreen =  new Vector2 (graphicsDeviceManager.PreferredBackBufferWidth/2, graphicsDeviceManager.PreferredBackBufferHeight/2);
     }
-    public void MoveToward (Vector2 target, float movePercentage= .02f)
+    public void MoveToward(GameTime gameTime, Vector2 target, float movePercentage= .02f)
     {
         //figure out which direction to move the camera,
         //by subtracting the current location from the target's
-        Vector2 delta = target - Center;
+        Vector2 differenceInPosition = target - Center;
 
         //figure out how far to move in each update
-        //based on distance to the target
-        delta *= movePercentage;
+        //based on distance to the target multiplied by how many percent of that distance to move
+        differenceInPosition *= movePercentage;
 
-        //move the camera to the new location
-        Center += delta;
+        //get a fraction how much time has passed since last update
+        //so the camera moves at a constant speed
+        var fractionOfPassedTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds / 10;
 
-        //if the camera is very close, just center it on the target
+        //move the camera towards the target based on
+        //both the desired percentage of distance and the time passed
+        Center += differenceInPosition * fractionOfPassedTime;
+
+        //if the camera is very close to the target, just center it on the target
         //in order to avoid "jiggling" if the camera continuously overshoots the target
         if((target - Center).Length() < movePercentage)
         {
