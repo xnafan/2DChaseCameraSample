@@ -98,7 +98,7 @@ internal class Camera
     }
 }
 ```
-# Smoother motion
+# Smooth motion as a C# one-liner
 [u/Apostolique](https://www.reddit.com/user/Apostolique/) suggested using Lerping to smooth the motion of the camera even more - thanks! 😊👍  
 I have chosen to keep the camera as is above, to show you what is going on in the math, step by step.  
 To get linear interpolation with his one-liner, you can make the following changes to the camera class:  
