@@ -45,6 +45,7 @@ The camera calculates the quarter screen by being sent the GraphicsDeviceManager
 ```C# 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Timers;
 
 namespace ChaseCameraSample;
 
@@ -67,20 +68,28 @@ internal class Camera
     {
         _quarterScreen =  new Vector2 (graphicsDeviceManager.PreferredBackBufferWidth/2, graphicsDeviceManager.PreferredBackBufferHeight/2);
     }
-    public void MoveToward (Vector2 target, float movePercentage= .02f)
+    public void MoveToward(Vector2 target, float deltaTimeInMs, float movePercentage= .02f)
     {
         //figure out which direction to move the camera,
         //by subtracting the current location from the target's
-        Vector2 delta = target - Center;
+        Vector2 differenceInPosition = target - Center;
 
         //figure out how far to move in each update
-        //based on distance to the target
-        delta *= movePercentage;
+        //based on distance to the target multiplied by how many percent of that distance to move
+        differenceInPosition *= movePercentage;
 
-        //move the camera to the new location
-        Center += delta;
+        //get a fraction how much time has passed since last update
+        //so the camera moves at a constant speed
+        var fractionOfPassedTime = deltaTimeInMs/ 10;
+        //note: dividing by 10 is an arbitrary constant,
+        //which works well in this case
+        //to make the camera slower than the player
 
-        //if the camera is very close, just center it on the target
+        //move the camera towards the target based on
+        //both the desired percentage of distance and the time passed
+        Center += differenceInPosition * fractionOfPassedTime;
+
+        //if the camera is very close to the target, just center it on the target
         //in order to avoid "jiggling" if the camera continuously overshoots the target
         if((target - Center).Length() < movePercentage)
         {
@@ -89,7 +98,25 @@ internal class Camera
     }
 }
 ```
+# Smoother motion
+[u/Apostolique](https://www.reddit.com/user/Apostolique/) suggested using Lerping to smooth the motion of the camera even more - thanks! 😊👍  
+I have chosen to keep the camera as is above, to show you what is going on in the math, step by step.
+You can make the following changes to the camera class to get linear interpolation:
 
-*Note*  
+//change the Camera.MoveToward method to
+```C#
+public void MoveToward(Vector2 target, float deltaTimeInMs, float movePercentage= .02f)
+{
+    Center = ExpDecay(Center, target, movePercentage, deltaTimeInMs/10);
+}
+```
+And add this private helpermethod for computing a percentage of the path to the target, interpolated
+```C# 
+private static Vector2 ExpDecay(Vector2 start, Vector2 target, float decay, float deltaTime)
+{
+    return target + (start - target) * MathF.Exp(-decay * deltaTime);
+}
+```
+
+*A note on rendering large worlds*  
 If you have a big game world with many sprites and entities to be drawn, make sure you only draw what's visible in the camera's field of view.  
-If you draw an entire huge game world you may experience lag.
