@@ -117,6 +117,8 @@ private static Vector2 ExpDecay(Vector2 start, Vector2 target, float decay, floa
     return target + (start - target) * MathF.Exp(-decay * deltaTime);
 }
 ```
+Here's a great video on LERP'ing (linear interpolation) in games, if you want the full explanation with visuals
+[Lerp smoothing is broken](https://www.youtube.com/watch?v=LSNQuFEDOyQ)
 
 *A note on rendering large worlds*  
 If you have a big game world with many sprites and entities to be drawn, make sure you only draw what's visible in the camera's field of view.  
